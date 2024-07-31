@@ -1,4 +1,4 @@
-import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa'
+import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 
 const Rating = ({ value, text }) => {
   return (
@@ -26,7 +26,7 @@ const Rating = ({ value, text }) => {
 
       <span className='rating-text'>{ text && text }</span>
     </div>
-  )
-}
+  );
+};
 
-export default Rating
+export default Rating;
