@@ -1,12 +1,22 @@
 {
   "name": "moviepointer",
   "version": "1.0.0",
-  "main": "/server.js",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "dev": "node /backend"
+    "start": "node ./backend/server.js",
+    "server": "nodemon ./backend/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "author": "bsyc26",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.4"
+  }
 }
