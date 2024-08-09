@@ -20,7 +20,7 @@ router
   .get(protect, getMyOrders);
 router
   .route('/:id')
-  .get(protect, admin, getOrderById);
+  .get(protect, getOrderById);
 router
   .route('/:id/pay')
   .put(protect, updateOrderToPaid);
