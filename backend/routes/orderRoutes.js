@@ -5,7 +5,7 @@ import {
   getOrderById,
   updateOrderToPaid,
   updateOrderToDelivered,
-  getAllOrders,
+  getOrders,
 } from '../controllers/orderController.js';
 import { protect, admin } from '../middlewares/authMiddleware.js';
 
@@ -14,7 +14,7 @@ const router = express.Router();
 router
   .route('/')
   .post(protect, addOrderItems)
-  .get(protect, admin, getAllOrders);
+  .get(protect, admin, getOrders);
 router
   .route('/mine')
   .get(protect, getMyOrders);

@@ -41,7 +41,7 @@ const Header = () => {
             <Nav className="justify-content-end w-100">
               <LinkContainer to='/cart'>
                 <Nav.Link><FaShoppingCart /> Cart
-                  { cartItems.length > 0 && (
+                  {cartItems.length > 0 && (
                     <Badge pill bg='success' style={{marginLeft: '5px'}}>
                       { cartItems.reduce((a, c) => a + c.qty, 0) }
                     </Badge>
@@ -49,7 +49,7 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
-              { userInfo ? (
+              {userInfo ? (
                 <NavDropdown title={userInfo.name} id='username'>
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>Profile</NavDropdown.Item>
@@ -64,6 +64,21 @@ const Header = () => {
                     <FaUser /> Sign In
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title='Admin Dashboard' id='adminmenu'>
+                  <LinkContainer to='/admin/productList'>
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/userList'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/orderList'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
