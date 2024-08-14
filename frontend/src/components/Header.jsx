@@ -4,8 +4,9 @@ import { NavDropdown, Badge, Navbar, Nav, Container } from 'react-bootstrap';
 import { FaShoppingCart, FaUser } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import logo from '../assets/logo.png';
-import { useLogoutMutation } from '../slices/usersApiSlice';
-import { logout } from '../slices/authSlice';
+import { useLogoutMutation } from '../slices/usersApiSlice.js';
+import { logout } from '../slices/authSlice.js';
+import SearchBox from './SearchBox.jsx';
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -28,17 +29,18 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='md' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>
-              <img src={logo} alt="" />
+              <img src={logo} alt='' />
               Movie Pointer
             </Navbar.Brand>
           </LinkContainer>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="justify-content-end w-100">
+          <Navbar.Toggle aria-controls='basic-navbar-nav' />
+          <Navbar.Collapse id='basic-navbar-nav'>
+            <Nav className='ms-auto'>
+              <SearchBox />
               <LinkContainer to='/cart'>
                 <Nav.Link><FaShoppingCart /> Cart
                   {cartItems.length > 0 && (
