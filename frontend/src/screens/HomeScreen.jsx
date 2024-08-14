@@ -5,6 +5,7 @@ import Loader from '../components/Loader.jsx';
 import Message from '../components/Message.jsx';
 import Paginate from '../components/Paginate.jsx';
 import ProductCarousel from '../components/ProductCarousel.jsx';
+import Meta from '../components/Meta.jsx';
 import { useGetProductsQuery } from '../slices/productsApiSlice.js';
 
 const HomeScreen = () => {
@@ -29,6 +30,7 @@ const HomeScreen = () => {
         </Message>
       ) : (
       <>
+        <Meta title='Movie Pointer | Home Page' />
         <h1>Latest Products</h1>
         <Row>
           {data.products.map((product) => (

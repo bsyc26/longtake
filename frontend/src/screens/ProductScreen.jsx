@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import Rating from '../components/Rating.jsx';
 import Loader from '../components/Loader.jsx';
 import Message from '../components/Message.jsx';
+import Meta from '../components/Meta.jsx';
 import { useGetProductDetailsQuery, useCreateReviewMutation, } from '../slices/productsApiSlice.js';
 import { addToCart } from '../slices/cartSlice.js';
 
@@ -78,6 +79,7 @@ const ProductScreen = () => {
         </Message>
       ) : (
         <>
+          <Meta title={`Movie Pointer | ${product.name}`} />
           <Row>
             <Col md={5}>
               <Image src={product.image} alt={product.name} fluid />
