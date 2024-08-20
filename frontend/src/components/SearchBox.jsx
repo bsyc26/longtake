@@ -7,7 +7,7 @@ const SearchBox = () => {
 
   const {keyword: urlKeyword} = useParams();
 
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState(urlKeyword || ''); // prevent the keyword state from being undefined
 
   const submitHandler = (e) => {
     e.preventDefault();

@@ -1,7 +1,7 @@
 import asyncHandler from '../middlewares/asyncHandler.js';
 import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
-// import { calcPrices } from '../utils/calcPrices.js';
+import { calcPrices } from '../utils/calcPrices.js';
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -11,31 +11,51 @@ const addOrderItems = asyncHandler(async (req, res) => {
     orderItems,
     shippingAddress,
     paymentMethod,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error('No order items');
   } else {
-    const order = new Order({
-      user: req.user._id,
-      orderItems: orderItems.map((x) => ({
-        ...x,
-        product: x._id,
+    // get the ordered items from DB
+    const itemsFromDB = await Product.find({
+      _id: { $in: orderItems.map((x) => x._id) },
+    });
+
+    // map over the order items and use the price from items from DB
+    const dbOrderItems = orderItems.map((itemFromClient) => {
+      const matchingItemFromDB = itemsFromDB.find(
+        (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
+      );
+      return {
+        ...itemFromClient,
+        product: itemFromClient._id,
+        price: matchingItemFromDB.price,
         _id: undefined,
-      })),
+      };
+    });
+
+    // calc prices
+    const {
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    } = calcPrices(dbOrderItems);
+
+    const order = new Order({
+      orderItems: dbOrderItems,
+      user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
-      taxPrice,
       shippingPrice,
+      taxPrice,
       totalPrice,
     });
+
     const createdOrder = await order.save();
+
     res.status(201).json(createdOrder);
   }
 });
@@ -67,9 +87,21 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @route   PUT /api/orders/:id/pay
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
+  // verify the payment made to PayPal before marking as paid
+  const { verified, value } = await verifyPayPalPayment(req.body.id);
+  if (!verified) throw new Error('Payment not verified');
+
+  // check if used transaction
+  const isNewTransaction = await checkIfNewTransaction(Order, req.body.id);
+  if (!isNewTransaction) throw new Error('Transaction has been used before');
+
   const order = await Order.findById(req.params.id);
 
   if (order) {
+    // check the correct amount was paid
+    const paidCorrectAmount = order.totalPrice.toString() === value;
+    if (!paidCorrectAmount) throw new Error('Incorrect amount paid');
+
     order.isPaid = true;
     order.paidAt = Date.now();
     order.paymentResult = {
@@ -80,7 +112,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     };
 
     const updatedOrder = await order.save();
-    res.status(200).json(updatedOrder);
+
+    res.json(updatedOrder);
   } else {
     res.status(404);
     throw new Error('Order not found');
