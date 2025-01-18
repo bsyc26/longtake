@@ -1,6 +1,6 @@
 # movie-pointer
 Full Stack Project:
-- Node.js
-- Express.js
-- MongoDB
-- React
+- Backend: Node.js, Express
+- API: RESTful
+- Database: MongoDB
+- Frontend: React, Bootstrap
