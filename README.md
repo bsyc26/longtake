@@ -1,2 +1,6 @@
 # movie-pointer
-The source code of ![moviepointer.com](moviepointer.com).
+Full Stack Project:
+- Node.js
+- Express.js
+- MongoDB
+- React
