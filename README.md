@@ -1,6 +1,5 @@
-# movie-pointer
+# Long Take
 Full Stack Project:
 - Backend: Node.js, Express
-- API: RESTful
 - Database: MongoDB
-- Frontend: React, Bootstrap
+- Frontend: React
